@@ -41,7 +41,7 @@ func Init() (*gorm.DB, error) {
 	//POSTGRESQL DSN
 	postgresDsn := os.Getenv("POSTGRES_DSN")
 	log.Println(postgresDsn)
-	db, err := gorm.Open(postgres.Open(postgresDsn), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(postgresDsn), &gorm.Config{})
 	log.Println(db, err)
 	if err != nil {
 		return nil, err
@@ -67,10 +67,8 @@ func GetInvoiceByID(id string) (*Invoice, error) {
 // GETInvoices from the Database by ID
 func GetInvoices(params InvoiceQueryParams) ([]Invoice, error) {
 
-	log.Println("this is the db instance", GetDB())
-
 	var invoices []Invoice
-	err := db.Limit(params.Limit).Offset(params.Offset).Order("CreatedAt desc").Find(&invoices).Error
+	err := db.Limit(params.Limit).Offset(params.Offset).Order("created_at desc").Find(&invoices).Error
 
 	if err != nil {
 		return nil, err
