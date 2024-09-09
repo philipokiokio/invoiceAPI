@@ -14,10 +14,19 @@ import (
 )
 
 func registerAPI(router *chi.Mux) {
-	router.Route("/api/v1", func(apiRouter chi.Router) {
+	router.Route("/api/v1/invoices", func(apiRouter chi.Router) {
 		//Invoice API
-		apiRouter.Get("/invoices", api.GetInvoices)
-		apiRouter.Get("/invoice/{invoiceId}", api.GetInvoiceByInvoiceId)
+		apiRouter.Get("/", api.GetInvoices)
+		apiRouter.Get("/{invoiceId}", api.GetInvoiceByInvoiceId)
+		apiRouter.Get("/dashboard", api.GetInvoiceDashBoard)
+		apiRouter.Post("/", api.CreateInvoice)
+		apiRouter.Patch("/{invoiceId}", api.UpdateInvoice)
+	})
+	router.Route("/api/v1/dummy-auth", func(apiRouter chi.Router) {
+
+		//	Get Bank Info
+		apiRouter.Get("/me", api.GetMe)
+		apiRouter.Get("/user-bank", api.GetUserBank)
 
 	})
 }
@@ -31,6 +40,9 @@ func main() {
 	}
 
 	_, err = models.Init()
+
+	//PLACEHOLDER USER
+	models.UserInit()
 
 	if err != nil {
 		fmt.Println(err)
